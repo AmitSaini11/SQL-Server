@@ -1,1 +1,121 @@
+/* Not Null example */
+CREATE TABLE Users (
+  id INT PRIMARY KEY NOT NULL,
+  username VARCHAR(50) NOT NULL,
+  email VARCHAR(100) NOT NULL
+);
+
+INSERT INTO Users (id, username, email) VALUES
+(1, 'john_doe', 'john@example.com'),
+(2, 'jane_smith', 'jane@example.com'),
+(3, 'mike_jones', 'mike@example.com'),
+(4, 'sarah_adams', 'sarah@example.com'),
+(5, 'chris_wilson', 'chris@example.com');
+select *from Users
+drop table Products
+
+/* UNIQUE example */
+CREATE TABLE Products (
+  id INT PRIMARY KEY NOT NULL,
+  name VARCHAR(255) CONSTRAINT product_name_constraint UNIQUE
+);
+/* Check if the table exists */
+SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Products';
+
+
+INSERT INTO Products (id, name) VALUES
+(1, 'Product A'),
+(2, 'Product B'),
+(3, 'Product C'),
+(4, 'Product D'),
+(5, 'Product E');
+select * from Products
+
+ /* PRIMARY KEY example */
+CREATE TABLE PK_Orders (
+  id INT PRIMARY KEY IDENTITY(1,1),
+  customer_id INT NOT NULL,
+  order_date DATE NOT NULL
+);
+
+INSERT INTO PK_Orders (customer_id, order_date) VALUES
+(1, '2024-02-22'),
+(2, '2024-02-21'),
+(3, '2024-02-20'),
+(4, '2024-02-19'),
+(5, '2024-02-18');
+select *from PK_Orders
+
+/* Foreign key */ 
+CREATE TABLE Customers (
+  id INT PRIMARY KEY identity(1,1),
+  name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Orders (
+  id INT PRIMARY KEY identity(1,1),
+  customer_id INT NOT NULL,
+  order_date DATE NOT NULL,
+  FOREIGN KEY (customer_id) REFERENCES Customers(id)
+);
+
+select * from Customers
+select * from Orders
+INSERT INTO Customers (name) VALUES
+('John Doe'),
+('Jane Smith'),
+('Mike Jones'),
+('Sarah Adams'),
+('Chris Wilson');
+
+INSERT INTO Orders (customer_id, order_date) VALUES
+(1, '2024-02-22'),
+(2, '2024-02-21'),
+(3, '2024-02-20'),
+(4, '2024-02-19'),
+(5, '2024-02-18');
+
+/* Check key */
+CREATE TABLE Product_check (
+  id INT PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  price DECIMAL(10,2) NOT NULL CHECK (price > 0)
+);
+
+INSERT INTO Product_check (id, name, price) VALUES
+(1, 'Product A', 10.50),
+(2, 'Product B', 20.25),
+(3, 'Product C', 15.75),
+(4, 'Product D', 8.99),
+(5, 'Product E', 12.49);
+select * from Product_check
+
+/* Not Null Dropping Constraints  */
+/* Find the name of the constraint: */
+SELECT name
+FROM sys. columns
+WHERE object_id = OBJECT_ID('Users') AND name = 'email';
+/* Once you know the name of the constraint, you can drop it: */
+ALTER TABLE Users
+ALTER COLUMN email VARCHAR(100) NULL;
+
+/* Add Constraint */
+Alter  table users Alter column email varchar(100) not null;
+-- user-defined constraint name 
+ALTER TABLE Users
+ADD CONSTRAINT not_null_email CHECK (email IS NOT NULL);
+-- Drop constraint name
+ALTER TABLE users DROP CONSTRAINT not_null_email 
+
+
+/* UNIQUE Drop Constraints */
+ALTER TABLE Products DROP CONSTRAINT UQ__Products__72E12F1BCD57378B;
+/* Add Constraint */
+Alter Table Products Add Constraint product_name_constraint UNIQUE(name)
+
+/*  Primary key Drop Constraints */
+Alter Table Orders Drop Constraint [PK_Orders]
+/* Add Constraint */
+Alter Table Orders Add Constraint PK_Orders primary key (id)
+
 
