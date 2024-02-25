@@ -119,3 +119,28 @@ Alter Table Orders Drop Constraint [PK_Orders]
 Alter Table Orders Add Constraint PK_Orders primary key (id)
 
 
+------------ Identity in my SQL server ----------------------
+create table Test (
+               ID int identity(1,1),
+			   Fname varchar(100));
+insert into Test(id,Fname) Values (6,'Ankit');
+select *from Test
+delete test where id=6
+-- manually set value on identity on
+set identity_insert Test off
+---
+DBCC checkIdent(Test,RESEED,10)
+
+CREATE TABLE Users_test (
+  id INT  PRIMARY KEY identity(1,1),
+  name VARCHAR(255)
+);
+
+INSERT INTO Users_test (name) VALUES ('John Doe');
+--- equivalent to the last values
+SELECT scope_identity() AS last_order_id;
+---equivalent to the last values 
+select IDENT_CURRENT('Test');
+
+
+
