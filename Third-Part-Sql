@@ -143,4 +143,71 @@ SELECT scope_identity() AS last_order_id;
 select IDENT_CURRENT('Test');
 
 
+Temporary Table in Sql server
+Types of Temporary Tables in SQL Server
+Local Temporary Tables
+Global Temporary Tables
 
+what is a Temporary Table in the Sql server explain with example.
+
+In SQL Server, a temporary table is a special type of table that exists temporarily within a specific database session or transaction. It's designed to store data needed for a short duration and doesn't require permanent storage.
+- Temporary tables are tables that exit temporarily on the SQL Server.
+- Temporary tables are stored in tempdb.
+- They work like a regular table in that you can perform the oppressions "Select, Insert, and Delete " as for a regular table.
+- IF created inside a stored procedure they are destroyed upon completion of the stored procedure.
+
+Creation:
+
+Use the CREATE TABLE with the TEMPORARY or TEMP keyword before the table name.
+Example: CREATE TEMPORARY TABLE temp_data (id INT, name VARCHAR(50))
+
+Scope:
+
+It exists only for the current session or transaction.
+Automatically dropped when the session ends or transaction commits/rolls back.
+Can be explicitly dropped with DROP TABLE before the end of their scope.
+
+3. Types:
+
+Local Temporary Tables: These are only accessible within the current session. Their names are prefixed with a single pound sign (#). More secure but limited functionalities.
+Global Temporary Tables: These are accessible to all sessions and are dropped when the last session referencing them ends. Their names are prefixed with a double pound sign (##). More powerful but less secure.
+
+4. Usage:
+
+Store intermediate results for complex calculations.
+Filter and manipulate subsets of data within a query or set of queries.
+Stage data for bulk operations.
+
+5. Limitations:
+
+Cannot be indexed or have triggers associated (except global temporary tables).
+Cannot be used in views or certain DDL statements.
+
+Example:-
+
+select * from [dbo].[Users]
+-- Select TEMP local  exiting 
+
+select * into #localTemp from [dbo].[Users]
+select *From #localTemp
+select Email from #localTemp where id=1
+
+---- create a temporary table using a local
+create table #localTemp2 (
+     ID int primary key identity(1,1),
+	 Name varchar(20))
+---- insert into values temporary table
+insert into #localTemp2 values('Ankit')
+select *from #localTemp2
+
+----------------------------------------------------------------------
+Global Table
+
+---- create a temporary table using Global
+create table ##GloballocalTemp (
+     ID int primary key identity(1,1),
+	 Name varchar(20))
+	 
+---- insert into values temporary table
+insert into ##GloballocalTemp values('Ankit')
+select *from ##GloballocalTemp
