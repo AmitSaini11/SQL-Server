@@ -5,7 +5,7 @@ The Exists opertor return s True if the subquery return one or more rows.
 Exists is commonly used with correlated subqueries.
 
 SQL Server Correlated Query
-A correlated subquery is a subquery that depends on the outer query. It means that the Where cluse of the correlated uses the data of the outer query.
+A correlated subquery is a subquery that depends on the outer query. It means that the Where clause of the correlated uses the data of the outer query.
 SQL corrected Subqueries are used to select data from a table reference in the outer query.
 
 
@@ -57,4 +57,39 @@ Execution	          Once for the entire outer query	    Once for each row in the
 Outer table reference	  No	                                    Yes (references a column)	
 Complexity	          Simpler	                            More complex	
 Performance	          Potentially faster	                    Potentially slower due to repeated execution	
-			
+
+
+------------------------------------------------------------------------------------------------
+
+CREATE TABLE Employees (
+    EmpID INT PRIMARY KEY,
+    EmpName VARCHAR(255),
+    Dept VARCHAR(100),
+    Salary DECIMAL(10, 2),
+    City VARCHAR(100),
+    JoinYear INT
+);
+INSERT INTO Employees (EmpID, EmpName, Dept, Salary, City, JoinYear) VALUES
+(1, 'John Doe', 'Engineering', 50000.00, 'New York', 2018),
+(2, 'Jane Smith', 'HR', 45000.00, 'Los Angeles', 2019),
+(3, 'Mike Johnson', 'Marketing', 48000.00, 'Chicago', 2020),
+(4, 'Sarah Adams', 'Finance', 55000.00, 'San Francisco', 2017),
+(5, 'Chris Wilson', 'Engineering', 52000.00, 'Seattle', 2016);
+select * from Employees
+---
+select * from Employees where Exists(select EmpID,EmpName from Employees where Salary <= 45000)
+select *from Employees where Exists(select 1)
+
+--- Exits In IF condition 
+If Exists(select * from  Employees where EmpID =1 )
+begin
+    select * from Employees where Salary =55000
+End
+Else
+begin
+    select * from Employees where Salary = 52000
+End
+
+--- Exists correlated subquery
+select * from Employees emp where Exists (
+select * from Employees where EmpID = emp.empid AND Salary >52000) 
