@@ -1,1 +1,184 @@
+ON DELETE CASCADE:
+
+When a row in the parent table is deleted, all corresponding rows in the child table(s) are automatically deleted as well.
+
+Example :-
+
+CREATE TABLE Employees (
+    EmpID INT PRIMARY KEY,
+    EmpName VARCHAR(255),
+    Dept VARCHAR(100),
+    Salary DECIMAL(10, 2),
+    City VARCHAR(100),
+    JoinYear INT
+);
+INSERT INTO Employees (EmpID, EmpName, Dept, Salary, City, JoinYear) VALUES
+(1, 'John Doe', 'Engineering', 50000.00, 'New York', 2018),
+(2, 'Jane Smith', 'HR', 45000.00, 'Los Angeles', 2019),
+(3, 'Mike Johnson', 'Marketing', 48000.00, 'Chicago', 2020),
+(4, 'Sarah Adams', 'Finance', 55000.00, 'San Francisco', 2017),
+(5, 'Chris Wilson', 'Engineering', 52000.00, 'Seattle', 2016);
+select * from Employees
+-- Create Products table
+CREATE TABLE Products (
+    ProductID INT IDENTITY(1,1) PRIMARY KEY,
+	EmpID int,
+    ProductName VARCHAR(255),
+    Price DECIMAL(10, 2),
+    FOREIGN KEY (EmpID) REFERENCES Employees(EmpID) ON DELETE CASCADE
+);
+--- ON DELETE CASCADE
+--- When a row in the parent table is deleted, all corresponding rows in the child table(s) are automatically deleted as well.
+
+-- Insert values into Products table
+INSERT INTO Products (EmpID,ProductName, Price) VALUES
+(1,'Product A', 10.99),
+(2,'Product B', 15.49),
+(3,'Product C', 20.00),
+(4,'Product D', 8.75),
+(5,'Product E', 12.99);
+
+select * from [dbo].[Products]
+select * from [dbo].[Employees]
+
+delete from Employees where EmpID = 1
+
+------------------------------------------------------------------------------------------
+SET NULL:
+
+When a row in the parent table is deleted or updated, all corresponding foreign key column values in the child table(s) are set to NULL.
+
+Example :- 
+
+CREATE TABLE Employees (
+    EmpID INT PRIMARY KEY,
+    EmpName VARCHAR(255),
+    Dept VARCHAR(100),
+    Salary DECIMAL(10, 2),
+    City VARCHAR(100),
+    JoinYear INT
+);
+INSERT INTO Employees (EmpID, EmpName, Dept, Salary, City, JoinYear) VALUES
+(1, 'John Doe', 'Engineering', 50000.00, 'New York', 2018),
+(2, 'Jane Smith', 'HR', 45000.00, 'Los Angeles', 2019),
+(3, 'Mike Johnson', 'Marketing', 48000.00, 'Chicago', 2020),
+(4, 'Sarah Adams', 'Finance', 55000.00, 'San Francisco', 2017),
+(5, 'Chris Wilson', 'Engineering', 52000.00, 'Seattle', 2016);
+select * from Employees
+-- Create Products table
+CREATE TABLE Products (
+    ProductID INT IDENTITY(1,1) PRIMARY KEY,
+	EmpID int,
+    ProductName VARCHAR(255),
+    Price DECIMAL(10, 2),
+    FOREIGN KEY (EmpID) REFERENCES Employees(EmpID) ON DELETE set null
+);
+--- set Null
+--- When a row in the parent table is deleted or updated, all corresponding foreign key column values in the child table(s) are set to NULL.
+
+-- Insert values into Products table
+INSERT INTO Products (EmpID,ProductName, Price) VALUES
+(1,'Product A', 10.99),
+(2,'Product B', 15.49),
+(3,'Product C', 20.00),
+(4,'Product D', 8.75),
+(5,'Product E', 12.99);
+
+select * from [dbo].[Products]
+select * from [dbo].[Employees]
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+SET DEFAULT:
+
+When a row in the parent table is deleted or updated, all corresponding foreign key column values in the child table(s) are set to their default values.
+
+CREATE TABLE Employees (
+    EmpID INT PRIMARY KEY,
+    EmpName VARCHAR(255),
+    Dept VARCHAR(100),
+    Salary DECIMAL(10, 2),
+    City VARCHAR(100),
+    JoinYear INT
+);
+INSERT INTO Employees (EmpID, EmpName, Dept, Salary, City, JoinYear) VALUES
+(1, 'John Doe', 'Engineering', 50000.00, 'New York', 2018),
+(2, 'Jane Smith', 'HR', 45000.00, 'Los Angeles', 2019),
+(3, 'Mike Johnson', 'Marketing', 48000.00, 'Chicago', 2020),
+(4, 'Sarah Adams', 'Finance', 55000.00, 'San Francisco', 2017),
+(5, 'Chris Wilson', 'Engineering', 52000.00, 'Seattle', 2016);
+select * from Employees
+-- Create Products table
+CREATE TABLE Products (
+    ProductID INT IDENTITY(1,1) PRIMARY KEY,
+	EmpID int not null default 1,
+    ProductName VARCHAR(255),
+    Price DECIMAL(10, 2),
+    FOREIGN KEY (EmpID) REFERENCES Employees(EmpID) ON DELETE set default 
+);
+--- SET DEFAULT:
+--- When a row in the parent table is deleted or updated, all corresponding foreign key column values in the child table(s) are set to their default values.
+
+-- Insert values into Products table
+INSERT INTO Products (EmpID,ProductName, Price) VALUES
+(1,'Product A', 10.99),
+(2,'Product B', 15.49),
+(3,'Product C', 20.00),
+(4,'Product D', 8.75),
+(5,'Product E', 12.99);
+
+select * from [dbo].[Products]
+select * from [dbo].[Employees]
+
+delete from Employees where EmpID = 2
+
+--------------------------------------------------------------------------------------------------------------------------
+ON UPDATE CASCADE:
+
+When a primary key or unique key column value in the parent table is updated, all corresponding foreign key column values in the child table(s) are automatically updated to match the new value.
+CREATE TABLE Employees (
+    EmpID INT PRIMARY KEY,
+    EmpName VARCHAR(255),
+    Dept VARCHAR(100),
+    Salary DECIMAL(10, 2),
+    City VARCHAR(100),
+    JoinYear INT
+);
+INSERT INTO Employees (EmpID, EmpName, Dept, Salary, City, JoinYear) VALUES
+(1, 'John Doe', 'Engineering', 50000.00, 'New York', 2018),
+(2, 'Jane Smith', 'HR', 45000.00, 'Los Angeles', 2019),
+(3, 'Mike Johnson', 'Marketing', 48000.00, 'Chicago', 2020),
+(4, 'Sarah Adams', 'Finance', 55000.00, 'San Francisco', 2017),
+(5, 'Chris Wilson', 'Engineering', 52000.00, 'Seattle', 2016);
+select * from Employees
+-- Create Products table
+CREATE TABLE Products (
+    ProductID INT IDENTITY(1,1) PRIMARY KEY,
+	EmpID int not null,
+    ProductName VARCHAR(255),
+    Price DECIMAL(10, 2),
+    FOREIGN KEY (EmpID) REFERENCES Employees(EmpID) ON UPDATE CASCADE 
+);
+--- ON UPDATE CASCADE:
+--- When a primary key or unique key column value in the parent table is updated, all corresponding foreign key column values in the child table(s) are automatically updated to match the new value
+
+-- Insert values into Products table
+INSERT INTO Products (EmpID,ProductName, Price) VALUES
+(1,'Product A', 10.99),
+(2,'Product B', 15.49),
+(3,'Product C', 20.00),
+(4,'Product D', 8.75),
+(5,'Product E', 12.99);
+
+select * from [dbo].[Products]
+select * from [dbo].[Employees]
+
+update  Employees set EmpID = 6 where EmpID=5
+
+delete from Employees where EmpID = 2
+
+
+drop table Products
+drop table Employees
+
 
