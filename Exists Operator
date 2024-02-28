@@ -1,1 +1,60 @@
+SQL Server Exixts Operator
 
+The Exists opertor is a logical opertor that allows you to check whether a subquery returns any row.
+The Exists opertor return s True if the subquery return one or more rows.
+Exists is commonly used with correlated subqueries.
+
+SQL Server Correlated Query
+A correlated subquery is a subquery that depends on the outer query. It means that the Where cluse of the correlated uses the data of the outer query.
+SQL corrected Subqueries are used to select data from a table reference in the outer query.
+
+
+Example :- Select *from employee emp where exists
+           ( select from employee where empID = emp.empID and salary > 5000)
+
+Note :- A correlated subquery executeonce for each selected row from the outer query.
+        (Total Rows in Table * Total Rows in Table)
+
+sub query and correlated query difference mysql server
+
+Sub-Query :- 
+A subquery is a query nested within another query.
+It can return a single value, a single row, multiple rows, or a result set.
+Subqueries can be used in different parts of a SQL statement, such as the SELECT, INSERT, UPDATE, or DELETE statements.
+Subqueries are executed independently of the outer query and are evaluated only once.
+The result of the subquery is used by the outer query as a single value, a single row, or a set of rows.
+
+Example:-
+
+SELECT Name
+FROM Customers
+WHERE CustomerID IN (
+    SELECT DISTINCT CustomerID
+    FROM Orders
+);
+
+Correlated Subquery:
+
+A correlated subquery is a type of subquery that references columns from the outer query within its WHERE clause.
+It is executed for each row processed by the outer query.
+The result of the correlated subquery may vary for each row of the outer query, as it depends on the values of the outer query's columns.
+Correlated subqueries are used to filter or modify the results based on the values of the outer query.
+
+Example:-
+
+SELECT Name
+FROM Customers AS c
+WHERE EXISTS (
+    SELECT *
+    FROM Orders AS o
+    WHERE o.CustomerID = c.CustomerID
+    AND o.OrderDate > '2023-01-01'
+);
+
+
+Feature	                  Subquery	                            Correlated Subquery	
+Execution	          Once for the entire outer query	    Once for each row in the outer query	
+Outer table reference	  No	                                    Yes (references a column)	
+Complexity	          Simpler	                            More complex	
+Performance	          Potentially faster	                    Potentially slower due to repeated execution	
+			
