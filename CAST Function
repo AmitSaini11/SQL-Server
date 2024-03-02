@@ -1,0 +1,12 @@
+CAST Function:
+The CAST function is ANSI SQL standard and is used to explicitly convert an expression from one data type to another.
+CAST is ANSI SQL standard and supported by most database systems, while CONVERT is specific to SQL Server.
+CAST is supported across multiple database systems, making it more portable, while CONVERT is specific to SQL Server.
+
+Example :- SELECT CAST('2024-02-23' AS DATE) AS ConvertedDate;
+
+CONVERT Function:
+The CONVERT function is specific to SQL Server (it's not ANSI SQL standard) and is used to convert an expression from one data type to another.
+CONVERT allows an optional style parameter for certain data types, while CAST does not.
+
+Example :- SELECT CONVERT(DATE, '2024-02-23') AS ConvertedDate;
