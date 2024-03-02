@@ -1,0 +1,80 @@
+The MERGE statement is a powerful and efficient tool available in various database systems (like SQL Server, Oracle, and PostgreSQL) that combines the functionalities
+of INSERT, UPDATE, and DELETE operations into a single statement. It allows you to perform these operations on a target table based on the results of a join with a source table.
+
+Key Features and Syntax:
+
+INSERT: Inserts new rows into the target table based on the source table data that doesn't have a matching row in the target table.
+UPDATE: Updates existing rows in the target table based on the source table data where there's a match according to the join condition.
+DELETE: Deletes rows from the target table that no longer have a corresponding row in the source table.
+
+Syntax:
+SQL
+MERGE INTO target_table AS t
+USING source_table AS s
+ON <join_condition>
+WHEN MATCHED THEN
+    UPDATE SET <update_clause>
+WHEN NOT MATCHED THEN
+    INSERT (<column_list>) VALUES (<source_column_list>)
+DELETE WHERE <delete_condition>;
+
+Explanation:
+
+MERGE INTO specifies the target table.
+USING joins the target table with the source table.
+ON defines the join condition between the target and source tables.
+WHEN MATCHED THEN defines actions to be performed on matching rows (updates).
+WHEN NOT MATCHED THEN defines actions to be performed on non-matching rows (inserts).
+DELETE WHERE specifies conditions for deleting rows from the target table.
+
+Example :- 
+
+-- Create the table
+CREATE TABLE Products_Source (
+    P_ID INT,
+    P_Name VARCHAR(255),
+    P_Price DECIMAL(10,2)
+);
+
+-- Insert 10 records
+INSERT INTO Products_Source(P_ID, P_Name, P_Price) VALUES
+(1, 'Product 1', 10.99),
+(2, 'Product 2', 20.49),
+(3, 'Product 3', 15.75),
+(4, 'Product 4', 8.99),
+(5, 'Product 5', 12.50),
+(6, 'Product 6', 18.25);
+
+--- target 
+-- Create the table
+CREATE TABLE Products_Target (
+    P_ID INT,
+    P_Name VARCHAR(255),
+    P_Price DECIMAL(10,2)
+);
+
+-- Insert 10 records
+INSERT INTO Products_Target (P_ID, P_Name, P_Price) VALUES
+(1, 'Product 1', 10.99),
+(2, 'Product 2', 20.49),
+(3, 'Product 3', 15.75),
+(4, 'Product 4', 8.99),
+(5, 'Product 5', 12.50),
+(6, 'Product 6', 18.25),
+(7, 'Product 7', 22.99),
+(8, 'Product 8', 9.99);
+
+select * from Products_Source
+select * from Products_Target
+
+MERGE into Products_Target as trg
+using Products_Source as src
+ON (trg.P_ID = src.P_ID)
+when not matched by target
+then
+Insert(P_ID,P_Name, P_Price)
+values(src.P_ID,src.P_Name,src.P_Price)
+when Matched then update
+set trg.P_Name=src.P_Name,trg.P_Price =src.P_Price
+when not matched by source
+then delete;
