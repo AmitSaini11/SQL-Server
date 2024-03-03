@@ -1,0 +1,91 @@
+SQL  Join 
+
+Joins in MySQL are powerful tools for combining data from multiple tables based on shared relationships between columns. They allow you to retrieve information spanning across multiple entities, revealing more comprehensive insights than single-table queries. Here's a breakdown of the different types of joins with examples:
+
+CREATE TABLE Customers_second (
+  id INT PRIMARY KEY,
+  name VARCHAR(50)
+);
+
+CREATE TABLE Orders_second (
+  id INT PRIMARY KEY,
+  customer_id INT,
+  order_date DATE,
+  FOREIGN KEY (customer_id) REFERENCES Customers(id)
+);
+
+INSERT INTO Customers_second VALUES (1, 'Alice'), (2, 'Bob'), (3, 'Charlie');
+INSERT INTO Orders_second VALUES (101, 1, '2023-02-20'), (102, 2, '2023-03-15');
+
+--- Inner Join 
+Returns only rows where there's a match in both tables based on the join condition
+Syntax: SELECT * FROM table1 INNER JOIN table2 ON table1.column = table2.column;
+Example:-
+
+select Customers_second.name,Orders_second.order_date
+From Customers_second
+inner join Orders_second ON Customers_second.id =Orders_second.customer_id
+
+--- Left Join (Left Outer Join):
+Returns all rows from the left table (table1) and the matched rows from the right table (table2). If there is no match, NULL values are returned from the right side.
+
+Syntax: SELECT * FROM table1 LEFT JOIN table2 ON table1.column = table2.column;
+Example:
+
+SELECT Customers_second.name, Orders_second.order_date
+FROM Customers_second
+LEFT JOIN Orders_second ON Customers_second.id = Orders_second.customer_id;
+
+--- Right Join (Right Outer Join):
+Returns all rows from the right table (table2) and the matched rows from the left table (table1). If there is no match, NULL values are returned from the left side.
+Syntax: SELECT * FROM table1 RIGHT JOIN table2 ON table1.column = table2.column;
+Example:
+
+SELECT Customers_second.name, Orders_second.order_date
+FROM Customers_second
+Right JOIN Orders_second ON Customers_second.id = Orders_second.customer_id;
+
+--- Full Join (Full Outer Join):
+Returns rows when there is a match in one of the tables. This join type returns all rows from both tables and NULL values where there is no match.
+Syntax: SELECT * FROM table1 FULL JOIN table2 ON table1.column = table2.column;
+Example:
+
+SELECT Customers_second.name, Orders_second.order_date
+FROM Customers_second
+Full outer JOIN Orders_second ON Customers_second.id = Orders_second.customer_id;
+
+--- CROSS JOIN:
+Returns the Cartesian product of the two tables, i.e., all possible combinations of rows from the two tables.
+Syntax: SELECT * FROM table1 CROSS JOIN table2;
+Example:
+
+SELECT *
+FROM Customers_second
+CROSS JOIN Orders_second;
+
+--- Self Join:
+Joins a table to itself, treating it as two separate tables with different aliases. Useful for comparing rows within the same table.
+Example:
+
+-- Create the table
+CREATE TABLE Employees_second (
+    EmployeeID INT,
+    EmployeeName VARCHAR(255),
+    ManagerID INT
+);
+
+-- Insert records into the table
+INSERT INTO Employees_second (EmployeeID, EmployeeName, ManagerID) VALUES
+(1, 'John', 3),
+(2, 'Alice', 3),
+(3, 'Bob', NULL),
+(4, 'Eve', 2);
+
+-- Perform a self-join query to retrieve employees along with their managers
+SELECT e1.EmployeeName AS employee, e2.EmployeeName AS manager
+FROM Employees_second e1
+JOIN Employees_second e2 ON e1.ManagerID = e2.EmployeeID;
+select * from Employees_second
+
+select * from Customers_second
+select * from Orders_second
