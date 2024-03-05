@@ -58,3 +58,46 @@ CREATE TABLE Orders (
   FOREIGN KEY (customer_id) REFERENCES Customers(id)
 );
 
+
+CREATE TABLE Customers (
+    customer_id INT PRIMARY key identity(1,1),
+    MobileNo VARCHAR(15),
+    city VARCHAR(50)
+);
+CREATE TABLE Orders (
+    order_id INT PRIMARY KEY identity(1,1),
+    customer_id INT,
+    Order_date DATE,
+    price DECIMAL(10, 2),
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
+-- Insert records into the Customer table
+INSERT INTO Customers (MobileNo, city) VALUES
+('1234567890', 'New York'),
+('9876543210', 'Los Angeles'),
+('5678901234', 'Chicago');
+
+-- Insert records into the Orders table
+INSERT INTO Orders (customer_id, Order_date, price) VALUES
+(4, '2024-03-04', 100.00),
+(1, '2024-03-01', 100.00),
+(2, '2024-03-02', 150.00),
+(1, '2024-03-03', 200.00),
+(3, '2024-03-04', 75.00);
+
+select * From Customers
+select * From Orders
+
+--- Insert into Order table 
+INSERT INTO Orders (customer_id, Order_date, price) VALUES
+(4, '2024-03-04', 100.00)
+--- This case Error msg
+
+--- Update into the Customer table
+update Customers set city = 'york' where order_id =1
+UPDATE Customers SET city = 'york' WHERE Customer_ID = 1;
+update orders set price = 76 where order_id=4
+
+DELETE FROM Customers WHERE city='york';
+
+
