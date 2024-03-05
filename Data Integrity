@@ -1,0 +1,60 @@
+Data Integrity
+
+Data Integrity is used to maintain the accuracy and consistency of data in a table.
+
+1. Accuracy:
+
+Data values should be correct and represent the real-world entities they describe.
+Example: Customer names should be spelled correctly, and product prices should be accurate.
+
+2. Consistency:
+
+Data across different tables and columns should be consistent and follow defined rules.
+Example: A customer's email address in the Customers table should match the email address used in the Orders table.
+
+3. Completeness:
+
+All necessary data for each entity should be present and not null unless explicitly allowed.
+Example: Product descriptions or order dates shouldn't be missing for valid entries.
+
+4. Validity:
+
+Data adheres to predefined rules and data types.
+Example: An age column should only contain integer values greater than zero.
+
+Data Integrity types
+1. System Defined Data Integrity
+2. User Defined Data Integrity
+
+1. System Defined Data Integrity types.
+a. Entity Integrity
+   Primary Key
+   Unique key
+   NULL Value
+
+b. Referential Integrity 
+a. Foreign key
+
+c. Domain Integrity
+a. Check 
+b. Default
+
+2. User-Defined Data Integrity
+a. Triggers
+
+
+Example:-
+
+CREATE TABLE Customers (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE,
+  age INT CHECK (age > 0)
+);
+
+CREATE TABLE Orders (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  customer_id INT NOT NULL,
+  FOREIGN KEY (customer_id) REFERENCES Customers(id)
+);
+
