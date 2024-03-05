@@ -1,0 +1,14 @@
+SQL Derived Table 
+
+A derived table in MySQL is a temporary table that is generated as the result of a subquery within the FROM clause of a SELECT statement. It allows you to perform complex calculations or transformations on existing data before querying it further. 
+
+A derived table is a subquery nested within a from clause.
+A dervied table is technique for creating a temporary set of records which can be used within another query is sql.
+you can use derived tables to shorten long queries,or even just to break a complex process into logical steps.
+In derived table srver create and populate the table in the memory we can directly use it and we also don't require to drop the table.
+But scope of derived table is limited to the outer select query who create it.
+Derived table can't be used further outside the scope of outer select query.
+
+when to use
+
+When you are required to perform some complexquery and result of inner query work as table for outer query.
