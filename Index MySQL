@@ -62,7 +62,18 @@ Clustered Index	                                                                
 CREATE CLUSTERED INDEX idx_lastname ON Employees(LastName);	                                           CREATE INDEX idx_department ON Employees(DepartmentID);
 
 
+SQL Server unique index:-
+A unique index ensures the index key columns do not contain any duplicate values.
+A unique index may consist of one or many columns.
+A unique index can be clustered or non-clustered.
 
+Where to Apply index
+Indexes are meant to speed up the performance of a database, so use indexing when never it significantly improves the performance of your database.
+Check Query and find reason for slow performance.
+Find column in query which is used frequently for searching.
+
+Disadvantages of indexing
+In case of update(change in indexed column) and delete a record,the database might need to move the entire row into a new position to keep the rows in sorted order.
 
                                                                                     		     
 
