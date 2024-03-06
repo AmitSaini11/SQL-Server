@@ -1,0 +1,85 @@
+SQL Set Opertors
+
+The SQL Set Opertion is used to combine the two or more SQL select statements.
+The set operators look similar to SQL joins although there is a big difference.
+SQL joins tends to combine columns from difference tables, where as SQL set operators co mbine rows from distinct queries.
+
+Rules on set Operations
+
+The results sets of all queries must have the same number of columns.
+In every reult set the data type of each column must match the data types of its corresponding column in the first result set.
+In order to sort the result an order by clause sholud be part of the last statement.
+The records from the top query must match the positional ordering of the records from the bottom query.
+
+Four Set Opertors
+
+Union :- Combine two or more result sets into a single set without duplicates.
+Union All :- Combine two or more result sets into a single set, including all duplicates.
+Intersect :- Takes the data from both result sets which are in common.
+Except :- Takes the data from first result set, but not the second(no matching each other)
+
+
+CREATE TABLE Test1 (
+    Name VARCHAR(50),
+    MobileNo VARCHAR(15),
+    City VARCHAR(50),
+    Occupation VARCHAR(50),
+    Salary DECIMAL(10, 2)
+);
+
+INSERT INTO Test1 (Name, MobileNo, City, Occupation, Salary) VALUES
+('John Doe', '1234567890', 'New York', 'Software Engineer', 75000.00),
+('Jane Smith', '9876543210', 'Los Angeles', 'Data Scientist', 85000.00),
+('Bob Johnson', '5678901234', 'Chicago', 'Marketing Manager', 65000.00),
+('John Doe duplicate', '1234567890', 'New York', 'Software Engineer', 90000.00),
+('Jane Smith duplicate', '9876543210', 'Los Angeles', 'Data Scientist', 95000.00),
+('Alice Johnson duplicate', '555123-4567', 'Chicago', 'Marketing Manager', 80000.00);
+
+-- Create the table
+CREATE TABLE Test2 (
+    Name VARCHAR(100),
+    MobileNo VARCHAR(20),
+    City VARCHAR(100),
+    Occupation VARCHAR(100),
+    Salary DECIMAL(10, 2)
+);
+
+-- Insert sample values
+INSERT INTO Test2 (Name, MobileNo, City, Occupation, Salary) VALUES
+('John Doe', '123-456-7890', 'New York', 'Software Engineer', 90000.00),
+('Jane Smith', '987-654-3210', 'Los Angeles', 'Data Scientist', 95000.00),
+('Alice Johnson', '555-123-4567', 'Chicago', 'Marketing Manager', 80000.00),
+('Jane Smith', '9876543210', 'Los Angeles', 'Data Scientist', 85000.00),
+('Bob Johnson', '5678901234', 'Chicago', 'Marketing Manager', 65000.00);
+
+select * from Test1
+select * from Test2
+
+-- Union :- Combine two or more result sets into a single set without duplicates.
+select Name, MobileNo, City, Occupation, Salary from Test1
+Union
+select Name, MobileNo, City, Occupation, Salary from Test2
+
+-- Union All :- Combine two or more result sets into a single set, including all duplicates.
+select Name, MobileNo, City, Occupation, Salary from Test1
+Union All
+select Name, MobileNo, City, Occupation, Salary from Test2
+
+-- Intersect :- Takes the data from both result sets which are in common.
+select Name, MobileNo, City, Occupation, Salary from Test1
+Intersect
+select Name, MobileNo, City, Occupation, Salary from Test2
+
+-- Except :- Takes the data from first result set, but not the second(no matching each other)
+select Name, MobileNo, City, Occupation, Salary from Test1
+Except
+select Name, MobileNo, City, Occupation, Salary from Test2
+
+
+
+
+
+
+
+
+
