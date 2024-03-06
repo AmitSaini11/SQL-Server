@@ -1,0 +1,12 @@
+Sub-Query
+A subquery is also called an inner query or inner select while the statement containing a subquery is also called an outer query or outer select.
+
+Rules:- 
+Subqueries must be enclosed within parentheses.
+You can use the comparison operators, such as >,<, or=, IN,ANY or ALL
+An Order By command cannot be used in a sub-query.
+
+Types of Sub Queries
+1. Single row subquery  (Returns zero or one row)
+2. Multiple row subquery (Returns one or more rows)
+3. Correlated sub-queries (The sub-query depends on the outer query for its values) 
