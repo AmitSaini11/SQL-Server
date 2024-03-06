@@ -1,0 +1,70 @@
+Index MySQL
+
+In MySQL Server, an index is a database object used to improve the performance of queries by speeding up data retrieval. An index is created on one or more columns of a table.
+An index is a data structure associated with a table that allows for fast retrieval of rows based on the values of certain columns. When you create an index on a column or a set of columns, MySQL creates an internal data structure (typically a B-tree) that allows it to quickly locate rows containing specific values or ranges of values.
+
+What is Index ?
+An index is a pointer to data in a table.
+An index in a database is very similar to an index in the back of a book.
+An index helps to speed up Select queries and Where Clauses.
+Indexes can be created or dropped with no effect on the data.
+
+Types of Indexes
+1. Clustered Index
+2. Non - Clustered Index 
+
+1. Clustered Index:- 
+In MySQL, a clustered index is an index in which the physical order of the rows in the table is the same as the order of the values in the indexed column(s).
+
+Characteristics of Clustered Indexes:
+
+Physical Order of Rows:
+In a clustered index, the rows of the table are stored in the order of the indexed column(s). This means that the rows are physically arranged on disk according to 
+the values of the indexed column(s).
+
+Primary Key as Clustered Index:
+In MySQL's InnoDB storage engine, the primary key is implicitly a clustered index. When you define a primary key on a table, MySQL automatically creates a clustered
+index on that key. This means that the rows in the table are physically ordered based on the primary key values.
+
+Unique Key as Clustered Index:
+If a table has a unique key defined (e.g., a UNIQUE constraint), MySQL may use it as a clustered index if no primary key is defined. In this case, the unique key 
+determines the physical order of the rows in the table.
+
+2. Non - Clustered Index 
+
+
+Non-Clustered Index:-
+In MySQL, a non-clustered index is an index in which the physical order of the rows in the table is not affected by the order of the indexed column(s).
+
+Characteristics of Non-Clustered Indexes:
+
+Separate Index Structure:
+In a non-clustered index, the index structure is separate from the data rows of the table. This means that the index contains pointers to the actual rows in the
+table rather than storing the rows themselves.
+
+Physical Order of Rows:
+Non-clustered indexes do not affect the physical order of the rows in the table. The rows remain stored in the order of insertion or modification, independent of
+the order of the indexed column(s).
+
+Support for Multiple Indexes:
+MySQL allows the creation of multiple non-clustered indexes on a table. Each index can be created on one or more columns and can be used to optimize different
+types of queries.
+
+Clustered Index	and Non-Clustered Index difference
+
+Feature   	Clustered Index	                                                                           Non-Clustered Index
+Structure	The data rows in the table are stored in the order of the indexed column(s).	               The index structure is separate from the data rows.
+Physical Storage	Changes the physical order of the table data.	                                       Does not alter the physical order of the table data.
+Key Column	Each table can have only one clustered index.	                                             Multiple non-clustered indexes can be created on a table.
+Index Maintenance	Inserting, updating, or deleting rows may require reordering of the data pages.	     Index maintenance doesn't affect the order of data pages.
+Example		                                                                                             Example
+Clustered Index	                                                                                       Non-Clustered Index
+CREATE CLUSTERED INDEX idx_lastname ON Employees(LastName);	                                           CREATE INDEX idx_department ON Employees(DepartmentID);
+
+
+
+
+                                                                                    		     
+
+
+
