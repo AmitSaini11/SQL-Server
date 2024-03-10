@@ -1,0 +1,46 @@
+In SQL Server, a subquery is a query nested within another query. The result of the subquery is used by the outer query to perform further operations such as 
+filtering, joining, or aggregating data. Subqueries allow you to break down complex queries into smaller, more manageable parts.
+
+There are three types of subqueries:
+
+Single-row subquery: A subquery that returns only one row of result. It can be used wherever a single value is expected in the outer query.
+
+Multiple-row subquery: A subquery that returns multiple rows of result. It can be used wherever a list of values is expected in the outer query.
+
+Correlated subquery: A subquery that references one or more columns from the outer query. The subquery is evaluated once for each row processed by the outer query.
+
+-- Create the Employees table
+CREATE TABLE Test4 (
+    EmpID INT,
+    EmpName VARCHAR(255),
+    DeptID INT,
+    Salary DECIMAL(10, 2)
+);
+
+-- Insert records into the Employees table
+INSERT INTO Test4 (EmpID, EmpName, DeptID, Salary) VALUES
+(1, 'John', 101, 50000.00),
+(2, 'Jane', 102, 60000.00),
+(3, 'Alice', 101, 55000.00),
+(4, 'Bob', 103, 52000.00),
+(5, 'Eva', 102, 58000.00);
+
+Select * from Test4
+-- Single-row subquery:
+-- Example: Find the employee with the highest salary
+SELECT EmpName, Salary
+FROM Test4
+WHERE Salary = (SELECT MAX(Salary) FROM Test4);
+
+-- Multiple-row subquery:
+-- Example: Find employees in the same department as employee 'John'
+Select EmpName,DeptID From Test4
+Where DeptID in(select DeptID From Test4 Where EmpName = 'John')
+
+-- Correlated subquery:
+-- Example: Find employees who earn more than the average salary in their department
+SELECT EmpName, Salary
+FROM Test4 t
+WHERE Salary > (SELECT AVG(Salary) FROM Test4 WHERE DeptID = t.DeptID);
+
+
