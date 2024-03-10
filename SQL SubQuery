@@ -43,4 +43,18 @@ SELECT EmpName, Salary
 FROM Test4 t
 WHERE Salary > (SELECT AVG(Salary) FROM Test4 WHERE DeptID = t.DeptID);
 
+--- Find the employee with the highest salary
+SELECT EmpName, Salary 
+FROM Test4 
+WHERE Salary NOT IN (
+    SELECT DISTINCT Salary 
+    FROM Test4 
+    WHERE Salary >= '999999'
+)
+-- Example: Find employees with a salary greater than any employee in the same department as employee 'John'
+SELECT EmpName
+FROM Test4
+WHERE Salary > ANY (SELECT Salary FROM Test4 WHERE DeptID IN 
+                   (SELECT DeptID FROM Test4 WHERE EmpName = 'John'));
+
 
