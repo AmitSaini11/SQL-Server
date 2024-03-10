@@ -1,0 +1,65 @@
+In MySQL Server, the GROUP BY clause is a powerful tool used for data aggregation and summarization within your SELECT statements. It allows you to group rows 
+based on shared values in one or more columns and then perform aggregate functions (like COUNT, SUM, AVG, MIN, MAX) on those groups.
+
+Benefits of Using GROUP BY:
+
+Data Summarization: Enables you to condense large datasets into meaningful summaries, focusing on trends and patterns instead of individual rows.
+Improved Readability: Makes complex queries easier to understand by organizing data into well-defined groups.
+Enhanced Analysis: Provides a foundation for various data analysis tasks by grouping data based on relevant criteria.
+
+SQL Having Clause
+
+Having clause utilize in SQL As a conditional clause with Group By Clause.
+Having clause restricts the data on the group records rather than individual records.
+A query may have the clauses (Where havinng clause).
+Where clause Applied first and then Having Clause.
+
+Difference between where and Having Clause
+
+  Where Clause                                         Having Clause
+- Where Clause Filter the rows                         Having Clause filters the whole group.   
+- Where Clause can not contain                         Having Clausecan contain Aggregate function.
+  Aggregate function.      
+- Where clause selects the data before grouping        Having Clause selects the data after grouping
+- Where clause can be used without Group By clause     Having Clause can not be used without Group By clause
+
+
+-- Create the Employee table
+CREATE TABLE Test3 (
+    EmpID INT,
+    EmpName VARCHAR(255),
+    DeptID INT,
+    Salary DECIMAL(10, 2),
+    JoinYear INT
+);
+
+-- Insert records into the Employee table
+INSERT INTO Test3 (EmpID, EmpName, DeptID, Salary, JoinYear) VALUES
+(1, 'John Doe', 101, 50000.00, 2018),
+(2, 'Jane Smith', 102, 60000.00, 2019),
+(3, 'Alice Johnson', 101, 55000.00, 2020),
+(4, 'Bob Williams', 103, 52000.00, 2017),
+(5, 'Eva Brown', 102, 58000.00, 2019);
+
+Select * from Test3
+--- Group by
+Select DeptID,sum(Salary) as Total_Salary,AVG(Salary) as AvgSalary,MAX(Salary)As Max_Salary
+From Test3 Group by DeptID;
+
+--- Group by Multi Column 
+SELECT DeptID,JoinYear, COUNT(DeptID) AS Total_Emp_deptID
+FROM Test3
+GROUP BY DeptID, JoinYear
+ORDER BY DeptID;
+
+-- Where Clause
+-- Find the total Salary, Average Salary in Department 1 & 3 .
+Select DeptID,SUM(Salary)AS TotalSalary from Test3
+Where DeptID in (101,104)
+Group by DeptID
+
+--- Having Clause
+Select DeptID,SUM(Salary)AS TotalSalary from Test3
+Where DeptID in (101,104)
+Group by DeptID
+Having Sum(Salary) > 50000
