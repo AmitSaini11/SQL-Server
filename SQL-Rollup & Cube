@@ -1,0 +1,66 @@
+SQL-Rollup & Cube:-
+
+In MySQL Server, ROLLUP and CUBE are extensions to the GROUP BY clause that allow you to generate subtotals and totals across multiple dimensions of your dataset.
+The Group By clause is used to Group the results of Aggregate Functions According to a Specified column using SUM(),AVG() etc.
+However, the Group By clause doesn't perform Aggregate operations on multiple levels of a hierachy.
+Generally CUBE and ROLLUP are used for repoting purposes.
+
+ROLLUP: The ROLLUP operation generates subtotals for each level of grouping specified in the GROUP BY clause, from the most detailed level to the grand total. It produces a result set that includes all possible combinations of the columns in the GROUP BY clause.
+
+CUBE: The CUBE operation generates subtotals for all possible combinations of columns specified in the GROUP BY clause. It produces a result set that includes all possible combinations of the columns, including the grand total.
+
+ROLLUP:- Rollup operators let you extend the functionality of Group By Clauses by Calculating subtotatls and Grand totals for a set of columns.
+
+Example:- 
+
+CREATE TABLE SalesData2 (
+    ProductID INT,
+    Region VARCHAR(50),
+    Year INT,
+    Sales DECIMAL(10, 2)
+);
+INSERT INTO SalesData2 (ProductID, Region, Year, Sales) VALUES
+(1, 'North', 2021, 1000.00),
+(1, 'North', 2022, 1500.00),
+(1, 'North', 2023, 2000.00),
+(2, 'North', 2021, 1200.00),
+(2, 'North', 2022, 1800.00),
+(2, 'North', 2023, 2200.00),
+(1, 'South', 2021, 800.00),
+(1, 'South', 2022, 1300.00),
+(1, 'South', 2023, 1900.00),
+(2, 'South', 2021, 1000.00),
+(2, 'South', 2022, 1500.00),
+(2, 'South', 2023, 2000.00),
+(3, 'North', 2021, 1500.00),
+(3, 'North', 2022, 2000.00),
+(3, 'North', 2023, 2500.00);
+
+select * From SalesData2
+-- Normal 
+Select Year,SUM(Sales) from SalesData2 Group By Year 
+-- Using Rollup  
+Select Year,SUM(Sales) from SalesData2 Group By Rollup(Year);
+-- Using COALESCE
+SELECT COALESCE(CONVERT(VARCHAR(10), Year), 'Number') AS YearOrNumber, 
+       SUM(Sales) AS TotalSales 
+FROM SalesData2 
+GROUP BY ROLLUP(Year);
+-- Using COALESCE MUltiple column
+Select COALESCE(Convert(varchar(10),year),'Number')As YearOrNumber,ProductID,
+       SUM(Sales)AS TotalSales 
+FROM SalesData2 
+GROUP BY ROLLUP(Year,ProductID);
+
+SQL CUBE:-
+The CUBE operator is similar in Functionality to the ROLLUP Operator,However, the CUBE Operator can calculate subtotals and Grand Totals for All permutations of 
+the columns specified in it.
+The CUBE Operator is also used in combination with the GROUP BY clause, however, the CUBE operator produces results by Generating all combinations of
+columns specified in the Group By clause.
+
+Example:-
+
+Select COALESCE(Convert(varchar(10), year), 'Number')As YearOrNumber, ProductID,
+       SUM(Sales)AS TotalSales 
+FROM SalesData2 
+GROUP BY CUBE(Year,ProductID);
