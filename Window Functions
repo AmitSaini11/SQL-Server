@@ -1,0 +1,192 @@
+Window Functions:-
+Window functions in SQL allow you to perform calculations across a set of rows related to the current row within the result set. They provide a way to perform calculations without grouping the result set into a single output row. Window functions are typically used in conjunction with the OVER() clause.
+
+We Perform calculations on data using  various Aggregated functions such as MAX, MIN, and AVG. We get a single output row using these functions.
+Window functions perform an Aggregate operation for each row and returns result in Details.
+
+List of Window Functions:
+There are two main categories of window functions:
+
+1. Ranking Window Functions:
+
+Determine a relative position or rank for each row within the window.
+RANK(): Assigns a rank to each row within the group, with ties sharing the same rank.
+DENSE_RANK(): Similar to RANK(), but assigns consecutive ranks even for ties.
+ROW_NUMBER(): Assigns a unique sequential number to each row within the partition.
+NTILE(N): Divides the result set into N equal-sized groups (tiles) and assigns a tile number to each row.
+
+2. Value Window Functions:
+
+Access or manipulate values from other rows within the window relative to the current row.
+LAG(expr, offset): Retrieves the value of the specified expression from a previous row (offset rows back).
+LEAD(expr, offset): Obtains the value of the expression from a following row (offset rows ahead).
+FIRST_VALUE(expr): Returns the first value of the expression within the window.
+LAST_VALUE(expr): Retrieves the last value of the expression within the window.
+
+
+List of window functions
+ 1. Over()
+ 2. Patition()
+
+Ranking Window Functions
+ 1. Rank() and Dense Rank()
+ 2. Row_Number()
+ 3. Ntile(N)
+
+Value Window Functions
+ 1. Lage and LEAD
+ 2. First_Value(),Last_Value()
+
+Over():- It is the replacement of Group By. The Over clause is used to determine which rows from the query are applied to the function.
+Partition By:- The Partition By clause is used to divide the result set from a query into data subsets.
+
+Example:-
+          Select Emp_id,product_id,dept,sum(Sales) Over(Partition By dept) as 'TotalSales' from SalesData;
+
+Rank() window Function :-
+
+The Rank() ranking window function returns a unique rank number for each distinct row within the partition according to a specified column value.
+Rank() function Always work on the Over() Function with Order By.
+
+Example:-
+
+select Emp_id,product_id,dept,sales,
+Rank() Over(Order By sales desc) as 'Sales_Rank'
+From SalesData;
+--- Department partition
+Select Emp_id,Product_id,Dept,Sales,
+Rank() Over(partition by dept Order By sales desc)
+As 'Sales_Rank' From SalesData
+
+Dense Rank() Function:- 
+The Dense Rank() function is similar to the RANK() except for one Difference, it doesn't skip any ranks when ranking rows.
+
+Example:-
+
+Select Emp_id,Product_id,Dept,Sales,
+Rank() Over(partition by dept Order By sales desc)As 'Sales_Rank',
+Dense_Rank() Over(partition by dept Order By sales desc)As 'Dense_Sales_Rank'
+From SalesData
+
+
+Row _Number Window Function:-
+
+We use the Row_Number() SQL RANK Function to get a unique sequential number for each row in the specified data.
+
+Example:-
+
+Select Emp_id,Product_id,Dept,Sales,
+ROW_NUMBER() Over(partition by dept Order By sales desc)
+As 'Row_Number' From SalesData
+
+
+NTINE(N) SQL RANK Function:-
+We use the NTILE(N) function to distribute the number of rows in the specified(N) number of Groups.
+
+Example:-
+
+Select Emp_id,Product_id,Dept,Sales,
+NTILE(2) Over(Order By sales desc)
+As 'NTILE_Number' From SalesData
+
+LAG() & LEAD()  Function:-
+The LAG function has the ability to fetch data from a previous row.
+While LEAD Fetches data from a Subsequent row.
+
+Example:- 
+
+-- LAG() & LEAD()  Function:-
+Select Emp_id,Product_id,Dept,Sales,Sales_year,
+Lag(Sales) Over(Order By sales desc)
+As 'Previous_year' From SalesData
+
+-- LEAD Function:- 
+Select Emp_id,Product_id,Dept,Sales,Sales_year,
+LEAD(Sales) Over(Order By sales desc)
+As 'Nest_year' From SalesData
+
+First_Value() and Last_Value() Function:-
+Both Functions are straight forward: They either return the first or the last value of an ordered set.
+
+Example :-
+
+-- First_Value() and Last_Value() Function:-
+Select Emp_id,Product_id,Dept,Sales,Sales_year,
+First_value(Sales) Over(Order By sales desc) As 'First_value',
+Last_value(Sales) Over(Order By sales desc) As 'Last_value'
+From SalesData
+
+===================================================================================================================================================
+Summary 
+
+-- Create the SalesData table
+CREATE TABLE SalesData (
+    Emp_id INT,
+    Dept VARCHAR(50),
+    Product_id INT,
+    Qty INT,
+    Sales DECIMAL(10, 2),
+    Sales_year INT
+);
+
+-- Insert records into the SalesData table
+INSERT INTO SalesData (Emp_id, Dept, Product_id, Qty, Sales, Sales_year) VALUES
+(114, 'Marketing', 1, 100, 6000.00, 2023),
+(112, 'Sales', 2, 150, 7500.00, 2023),
+(103, 'HR', 3, 200, 10000.00, 2023),
+(104, 'Finance', 4, 120, 6000.00, 2023),
+(105, 'Marketing', 1, 180, 9000.00, 2024),
+(106, 'Sales', 2, 200, 10000.00, 2024),
+(107, 'HR', 3, 250, 12500.00, 2024),
+(108, 'Finance', 4, 150, 7500.00, 2024),
+(109, 'Operations', 5, 170, 8500.00, 2024),
+(110, 'Marketing', 1, 220, 11000.00, 2024);
+
+Select * from SalesData;
+-- Over() and Partition
+select Emp_id,product_id,dept,sum(Sales) Over(Partition By dept) as 'TotalSales' from SalesData;
+
+-- Rank() Function 
+select Emp_id,product_id,dept,sales,
+Rank() Over(Order By sales desc) as 'Sales_Rank'
+From SalesData;
+--- Department partition
+Select Emp_id,Product_id,Dept,Sales,
+Rank() Over(partition by dept Order By sales desc)
+As 'Sales_Rank' From SalesData
+
+-- Dense Rank() Function:- 
+Select Emp_id,Product_id,Dept,Sales,
+Rank() Over(partition by dept Order By sales desc)As 'Sales_Rank',
+Dense_Rank() Over(partition by dept Order By sales desc)As 'Dense_Sales_Rank'
+From SalesData
+
+-- ROW_NUMBER() Window Function
+Select Emp_id,Product_id,Dept,Sales,
+ROW_NUMBER() Over(partition by dept Order By sales desc)
+As 'Row_Number' From SalesData
+
+-- NTINE(N) SQL RANK Function:-
+Select Emp_id,Product_id,Dept,Sales,
+NTILE(2) Over(Order By sales desc)
+As 'NTILE_Number' From SalesData
+
+-- LAG() & LEAD()  Function:-
+Select Emp_id,Product_id,Dept,Sales,Sales_year,
+Lag(Sales) Over(Order By sales desc)
+As 'Previous_year' From SalesData
+
+-- LEAD Function:- 
+Select Emp_id,Product_id,Dept,Sales,Sales_year,
+LEAD(Sales) Over(Order By sales desc)
+As 'Nest_year' From SalesData
+
+-- First_Value() and Last_Value() Function:-
+Select Emp_id,Product_id,Dept,Sales,Sales_year,
+First_value(Sales) Over(Order By sales desc) As 'First_value',
+Last_value(Sales) Over(Order By sales desc) As 'Last_value'
+From SalesData
+
+
+
+
