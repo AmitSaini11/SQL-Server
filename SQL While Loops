@@ -1,8 +1,9 @@
 SQL While Loops
 
-In SQL, the WHILE loop is a control flow statement that allows you to repeatedly execute a block of SQL statements as long as a specified condition evaluates to true. WHILE loops are commonly used in SQL Server, but they may not be available in all database systems.
+In SQL, the WHILE loop is a control flow statement that allows you to repeatedly execute a block of SQL statements as long as a specified condition evaluates 
+to true. WHILE loops are commonly used in SQL Server, but they may not be available in all database systems.
 
-Example :-
+Example:-
 
 -- SQL Server Loops
 Declare @Count int;
@@ -13,7 +14,7 @@ Begin
 	 set @count=@count+1;
 END
 
-----
+-----------------------------------------------------------------------------------
 CREATE PROCEDURE CalculateFactorial
     @Number INT
 AS
@@ -38,5 +39,19 @@ END;
 
 
 EXEC CalculateFactorial @Number = 5;
+-----------------------------------------------------------------------------------------
+Declare @TableNo int;
+Declare @Count int;
+
+set @TableNo=10;
+set @Count=1
+
+While @Count<=10
+Begin
+     print concat(@TableNo,'X',@count,'=',@TableNo * @Count);
+	 set @Count=@Count+1;
+END
+print 'End of Loop'
+
 
 
