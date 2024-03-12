@@ -1,0 +1,77 @@
+SQL CASE statement:-
+In SQL, the CASE statement is a powerful tool for performing conditional logic within queries. It allows you to evaluate conditions and return different values based on those conditions. The CASE statement can be used in various scenarios to manipulate data or customize query results.
+- In SQL Server the CASE Statement has the functionality of an IF-THEN-ELSE Statement.
+- The case statement in SQL returns a value on a specified condition.
+- We can use the CASE Statement within a SQL Statement.
+- IF-Else, where only the maximum of one condition is allowed, CASE allows the user to apply multiple conditions to perform different sets of actions.
+- We can use CASE in statements such as SELECT,UPDATE and SET,and in clauses such as select_list,IN,WHERE,ORDER BY, and HAVING.
+
+Example :- 
+
+-- Create the StudentGrades table
+CREATE TABLE StudentGrades (
+    RollNo INT,
+    Student_Name VARCHAR(50),
+    City VARCHAR(50),
+    English INT,
+    Math INT,
+    Science INT,
+    Gender VARCHAR(10)
+);
+
+-- Insert records into the StudentGrades table
+INSERT INTO StudentGrades (RollNo, Student_Name, City, English, Math, Science, Gender) VALUES
+(1, 'John Doe', 'New York', 85, 90, 88, 'Male'),
+(2, 'Jane Smith', 'Los Angeles', 78, 95, 90, 'Female'),
+(3, 'Michael Johnson', 'Chicago', 92, 88, 85, 'Male'),
+(4, 'Emily Brown', 'Houston', 80, 85, 92, 'Female'),
+(5, 'William Jones', 'Phoenix', 75, 92, 78, 'Male'),
+(6, 'Olivia Davis', 'Philadelphia', 88, 82, 90, 'Female'),
+(7, 'James Wilson', 'San Antonio', 85, 87, 89, 'Male'),
+(8, 'Sophia Martinez', 'San Diego', 90, 91, 93, 'Female'),
+(9, 'Benjamin Anderson', 'Dallas', 82, 79, 87, 'Male'),
+(10, 'Isabella Taylor', 'San Jose', 93, 88, 91, 'Female'),
+(11, 'Mason Thomas', 'Austin', 78, 84, 89, 'Male'),
+(12, 'Mia Hernandez', 'Jacksonville', 87, 92, 84, 'Female'),
+(13, 'Ethan Moore', 'Indianapolis', 89, 85, 90, 'Male'),
+(14, 'Ava Nelson', 'Columbus', 92, 91, 95, 'Female'),
+(15, 'Liam White', 'Fort Worth', 85, 88, 86, 'Male'),
+(16, 'Charlotte King', 'Charlotte', 88, 90, 92, 'Female');
+
+Select * from StudentGrades
+-- Case Statement in SELECT Statement
+Select RollNo,Student_Name,city,English,Math,Science,Gender,
+Student_Grade = 
+Case
+    When (English+Math+Science) > 200 Then 'A'
+	When (English+Math+Science) > 150 AND (English+Math+Science) <= 200 Then 'B'
+	When (English+Math+Science) > 100 AND (English+Math+Science) <= 150 Then 'C'
+	ELSE 'Fail'
+END
+From StudentGrades
+-- Update Statement 
+Alter table StudentGrades Add Grade varchar(10) 
+Select RollNo,Student_Name,city,English,Math,Science,Gender,Grade from StudentGrades
+Update StudentGrades set Grade =
+Case 
+    When (English+Math+Science) > 200 Then 'A'
+	When (English+Math+Science) > 150 AND (English+Math+Science) <= 200 Then 'B'
+	When (English+Math+Science) > 100 AND (English+Math+Science) <= 150 Then 'C'
+	ELSE 'Fail'
+END
+
+-- CASE Statement in Insert Statement
+Select RollNo,Student_Name,city,English,Math,Science,Gender,Grade from StudentGrades
+
+Declare @Gender varchar(1)
+Set @Gender=1
+Insert into StudentGrades(RollNo,Student_Name,city,English,Math,Science,Gender,Grade)
+values(17,'Ava Nelson', 'Columbus', 92, 91, 95, case when @Gender=1 then 'Male' Else 'Female' End,'A')
+
+-- CASE Statement in Order Clause
+Select RollNo,Student_Name,city,English,Math,Science,Gender,Grade from StudentGrades
+order by
+Case when (select count(Gender) from StudentGrades where Gender='Male') >80 then city
+else
+Student_Name
+END
