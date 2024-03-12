@@ -1,0 +1,126 @@
+SQL Stored Procedures
+
+What is stored procedure ?
+How to create stored procedure ?
+How to modify stored procedure ?
+How to Drop stored procedure ?
+How to send parameter in stored procedure ?
+Types of parameters in stroed procedure ?
+How to encrypt stored procedure ?
+
+SQL Stored Procedures:-
+Stored procedures in SQL are a set of precompiled SQL statements stored in the database server. They can accept parameters, perform operations, and return results. Stored procedures offer several advantages such as improved performance, code reusability, and enhanced security.
+
+A Stored procedure is a database object.
+A stored procedure is a series of declarative SQL Statements.
+A stored procedure can be stored in the database and can be reused over and over again.
+Parameters can be passed to a stored to a stored procedure, so that the stored procedure can act based on the parameter value(s)
+SQL Server create an execution plan and stores it in the cache.
+
+What is stored procedure ?
+A stored procedure is a group of SQL statements that are stored in the database and can be executed later. It can accept input parameters, perform actions such as querying or modifying data, and return results to the caller.
+
+Types of stored procedures
+1. User Defined Stored Procedure
+2. System Stored Procedures.
+
+1. User Defined Stored Procedure:- USer Defined stored procedures are created by database Developers or database Administrators. These SPs contains one more SQL 
+                                   Statements to select,update,or delete records from database tables.
+These are procedures created by users or developers to perform specific tasks or operations. They are written using SQL and optionally, procedural programming languages like PL/SQL (for Oracle) or T-SQL (for SQL Server).
+
+Example :- 
+
+CREATE PROCEDURE GetUserByID
+    @UserID INT
+AS
+BEGIN
+    SELECT * FROM Users WHERE UserID = @UserID;
+END;
+
+
+2. System Stored Procedures:- System stored procedures are created and executed by SQL Server for the Server Administrative Activities.
+   These are built-in procedures provided by the database management system (DBMS) itself. They are used for various administrative tasks, system maintenance, and to access       system metadata.
+
+Example:-
+
+sp_help
+
+
+create stored procedure
+
+Select * From [dbo].[Employee]
+Create procedure spHightSalary
+As 
+Begin
+Select EmployeeID, max(Salary) As Max_Salary 
+from [dbo].[Employee] 
+Group By EmployeeID
+END
+-- Execute 
+spHightSalary
+Execute spHightSalary
+Exec spHightSalary
+
+ How to modify a stored procedure?
+Alter procedure spHightSalary
+As 
+Begin
+select * from Employee where Department = 'HR'
+select * from Employee where Position = 'Manager'
+END
+
+How to drop a stored procedure?
+DROP PROCEDURE ProcedureName;
+
+How to send parameters in a stored procedure?
+Parameters can be declared in the stored procedure definition and passed when calling the procedure.
+
+Types of parameters in stored procedures:
+
+Input Parameters: Used to pass values into the stored procedure.
+Output Parameters: Used to return values from the stored procedure.
+Input/Output Parameters: Used for both passing values into the stored procedure and returning values from it.
+Return Value: Used to return a single value from the stored procedure.
+
+--- Parameters in stored procedure
+Alter procedure spHightSalary
+@Department varchar,
+@Position varchar
+As 
+Begin
+select * from Employee where Department= @Department;
+select * from Employee where Position = @Position
+END
+
+Execute spHightSalary 'HR', 'Manager'
+
+-- Default Parameters 
+Alter procedure spHightSalary
+@Department varchar='IT',
+@Position varchar='Assistant'
+As 
+Begin
+select * from Employee where Department= @Department;
+select * from Employee where Position = @Position
+END
+
+Execute spHightSalary 'HR', 'Manager'
+
+
+Output Parameter
+
+Create PROC spAddDigit
+@Num1 Int,
+@Num2 Int,
+@Result Int Output
+As
+Begin 
+    SET @Result = @Num1+@Num2;
+END
+
+Declare @EId Int
+Exec spAddDigit 23,25,@EId Output;
+select @EId;
+
+
+
