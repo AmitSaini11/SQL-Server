@@ -122,5 +122,12 @@ Declare @EId Int
 Exec spAddDigit 23,25,@EId Output;
 select @EId;
 
+How to encrypt a stored procedure?
+Example:- 
 
-
+CREATE PROCEDURE ProcedureName
+WITH ENCRYPTION
+AS
+BEGIN
+    -- SQL statements
+END;
