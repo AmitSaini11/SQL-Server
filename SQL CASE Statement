@@ -1,0 +1,109 @@
+CASE Statement:-
+
+In SQL, you can use CASE statements to perform conditional logic similar to IF-ELSE statements. CASE statements allow you to evaluate conditions and return different values based on those conditions. You can also nest CASE statements to handle more complex logic.
+
+Example:-
+
+CREATE TABLE Employee (
+    EmployeeID INT PRIMARY KEY,
+    Salary DECIMAL(10, 2),
+    Salary_Category VARCHAR(10)
+);
+
+INSERT INTO Employee (EmployeeID, Salary)
+VALUES
+(1, 55000.00),
+(2, 42000.00),
+(3, 28000.00),
+(4, 60000.00),
+(5, 35000.00);
+
+-- Implementing the conditional logic using CASE statements:
+UPDATE Employee
+SET Salary_Category = CASE
+    WHEN Salary >= 50000 THEN 'High'
+    WHEN Salary >= 30000 AND Salary < 50000 THEN 'Medium'
+    ELSE 'Low'
+END;
+----------------------
+If (1=2)
+Begin
+     print 'True Condition';
+END
+ else
+Begin
+     print 'False Condition';
+END
+
+--------------------------------------------
+Declare @RollNo INT;
+Declare @Eng INT;
+Declare @Math INT;
+Declare @Hindi INT;
+Declare @Total INT;
+Declare @Per INT;
+--- Initialise varibles
+SET @RollNo =100;
+SET @Eng =87;
+SET @Math = 78;
+SET @Hindi =56;
+SET @Total = @Eng+@Math+@Hindi;
+SET @Per =@Total/3;
+    print concat('RollNo:',@RollNo);
+	print concat('Total:',@Total);
+    print concat('Percentage:',@Per);
+IF @Per >80
+Begin
+     print 'Grade A';
+END
+ELSE
+BEGIN
+      print 'Fail';
+END
+
+--- IF Else Nested in SQL
+Declare @RollNo INT;
+Declare @Eng INT;
+Declare @Math INT;
+Declare @Hindi INT;
+Declare @Total INT;
+Declare @Per INT;
+--- Initialise varibles
+SET @RollNo =100;
+SET @Eng =89;
+SET @Math = 80;
+SET @Hindi =70;
+SET @Total = @Eng+@Math+@Hindi;
+SET @Per =@Total/3;
+    print concat('RollNo:',@RollNo);
+	print concat('Total:',@Total);
+    print concat('Percentage:',@Per);
+IF @Per >80
+Begin
+     print 'Grade A';
+END
+ELSE IF @Per >60 AND @Per <=80
+BEGIN
+       print 'Grade B';
+END
+ELSE IF @Per >40 AND @Per <=60
+BEGIN
+    print 'Grade C';
+END
+BEGIN
+      print 'Fail';
+END
+-----------------------
+Select * from [dbo].[Customers]
+-- USe of - If Statement to check record in table
+If Exists(Select * from [dbo].[Customers] where customer_id =1)
+Begin 
+    print 'RollNo Exists';
+End
+Else
+Begin 
+      print 'Roll Does not exists';
+end
+
+
+
