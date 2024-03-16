@@ -99,3 +99,23 @@ Begin
      Rollback
 End
 
+
+1. Autocommit Transactions (Default Behavior):
+
+MySQL Server operates in autocommit mode by default.
+This means every single SQL statement (e.g., INSERT, UPDATE, DELETE) is treated as an individual transaction.
+If a statement succeeds, the changes are committed immediately. If it fails, the operation is rolled back, and no changes are made.
+
+2. Implicit Transactions:
+
+The term "implicit transaction" can sometimes be used interchangeably with autocommit transactions.
+However, a subtle difference exists.
+Implicit transactions can also occur when you explicitly start a transaction (BEGIN TRANSACTION;) but don't explicitly commit it (COMMIT;).
+In this case, MySQL automatically commits the transaction at the end of your SQL statement or when you encounter a semicolon (;).
+
+3. Explicit Transactions:
+
+Offer more granular control over transactions.
+You define the boundaries of a transaction using BEGIN TRANSACTION; and COMMIT; statements.
+All SQL statements between these markers are treated as a single unit.
+You can also use ROLLBACK; within the transaction block to undo all changes if an error occurs.
