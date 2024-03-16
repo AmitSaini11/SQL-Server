@@ -1,0 +1,101 @@
+Sql Transaction :- A Transaction is a sequare of operstions performed (using one or more SQL statements) on a database as a single logical unit of work.
+Transaction may consist of a single read,write,delete or update opertions or a combination of these.
+
+In MySQL Server, a transaction is a fundamental unit of work that ensures data consistency and integrity within your database operations. It groups multiple SQL statements (like INSERT, UPDATE, DELETE) 
+into a single logical unit, ensuring either all the statements succeed or none of them are applied.
+
+Key Concepts of Transactions (ACID Properties):
+
+Atomicity: Ensure that all operatons within the work unit are completed successfully otherwise,the transaction is aborted at the point of failure and prevous operations are
+rolled back to their former state.
+
+Consistency: Ensures that the database properly changes state upon a successfully committed transaction.
+A transaction ensures that the database transitions from one valid state to another. It enforces data integrity rules and constraints defined on your tables.
+
+Isolation: Enables transactions to operate independetly of and transparent to each other.
+Concurrent transactions are isolated from each other, ensuring that the outcome of one transaction doesn't affect the execution of another. This prevents data races and inconsistencies.
+
+Durability: Ensures that the result or effect of a committed transaction persists in case of a system failure.
+Once a transaction is committed, the changes are permanently persisted to the database storage. This guarantees that the changes survive even in case of system failures.
+
+
+Models of the Transctions in SQL Server
+
+Autocommit Transaction :- Autocommit Transaction mode is the default transction for the SQL Server. The Successful statements are commited and the failed statements are rolled 
+back immediately.
+
+Implicit Transaction :- This mode enables to sql server to start an implicit transaction for every DML statement but we need to use the commit or rolled back commands explicitly
+ at the end of the statements.
+
+Explicit Transaction :- Explicit Transaction mode provides to define a transaction exactly with the starting and ending points of the transaction
+
+Example :-
+
+-- By default, MySQL uses autocommit mode, so each individual SQL statement is automatically committed.
+-- For example:
+CREATE TABLE ExampleTable (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(50)
+);
+
+-- Insert records into the table (each insert is an individual autocommit transaction)
+INSERT INTO ExampleTable (ID, Name) VALUES (1, 'John');
+INSERT INTO ExampleTable (ID, Name) VALUES (2, 'Jane');
+select * from ExampleTable
+
+-- Autocommit Transaction(By Default)
+INSERT INTO ExampleTable (ID, Name) VALUES (3, 'Sunil');
+update ExampleTable set name='ABC' where id=2
+Delete from ExampleTable where id = 1
+select @@TRANCOUNT
+
+-- Implicit Transaction
+-- 1. In order to define an implicit transcation, we need to enable the Implicit_Transaction option.
+-- 2. SQL Sever automatically starts a transaction with any following statements.
+--    Alter Table,Create,Delete,Drop,Fetch,Grant,Insert,Open,Revoke,Select,Truncate Table, and Update
+-- 3. Use Commit(Permanent Save) or RollBack(Cancel Trans) always.
+
+SET IMPLICIT_TRANSACTIONS ON 
+INSERT INTO ExampleTable (ID, Name) VALUES (4, 'Sumit');
+update ExampleTable set name='Harsh' where id=2
+Delete from ExampleTable where id = 3
+Select @@TRANCOUNT As OpenTransactions 
+Rollback
+Select @@TRANCOUNT As OpenTransactions 
+--- second wise
+SET IMPLICIT_TRANSACTIONS ON 
+INSERT INTO ExampleTable (ID, Name) VALUES (4, 'Sumit');
+update ExampleTable set name='Harsh' where id=2
+Delete from ExampleTable where id = 3
+
+Declare @choice INT
+set @choice =1;
+IF @choice=1
+Begin
+    Commit
+End
+Else
+Begin
+    Rollback
+End
+
+--- Explicit Tranction
+-- 1. We start to use the Begin Tranaction command beacuse this statement identifies the starting point of the explicit transaction.
+-- 2. Use Commit(Permanent save) or RollBack(cancel Trans) always.
+
+Begin Transaction 
+INSERT INTO ExampleTable (ID, Name) VALUES (4, 'Sumit');
+update ExampleTable set name='Harsh' where id=2
+Delete from ExampleTable where id = 3
+
+declare @ch int;
+set @ch =1;
+if @ch =1
+Begin
+    commit
+End
+Else
+Begin
+     Rollback
+End
+
